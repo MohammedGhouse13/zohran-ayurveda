@@ -1,0 +1,9 @@
+"use client";
+import {useState} from "react";
+import {formatINR} from "@/lib/money";
+
+export default function TrackOrder(){
+ const [orderNumber,setOrderNumber]=useState(""); const [email,setEmail]=useState(""); const [result,setResult]=useState<any>(null); const [error,setError]=useState(""); const [busy,setBusy]=useState(false);
+ async function submit(e:React.FormEvent){e.preventDefault();setBusy(true);setError("");setResult(null);try{const r=await fetch("/api/orders/track",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({orderNumber,email})});const d=await r.json();if(!r.ok)throw new Error(d.error);setResult(d.order)}catch(e:any){setError(e.message)}finally{setBusy(false)}}
+ return <section className="section2"><div className="container trackwrap"><div className="kicker">ORDER SUPPORT</div><h1>Track your order.</h1><p className="muted">Enter the order number from your confirmation and the email used at checkout.</p><form className="form trackform" onSubmit={submit}><input className="input" placeholder="Order number e.g. ZA-ABC123" value={orderNumber} onChange={e=>setOrderNumber(e.target.value)} required/><input className="input" type="email" placeholder="Email used at checkout" value={email} onChange={e=>setEmail(e.target.value)} required/><button className="btn primary" disabled={busy}>{busy?"Checking…":"Track order →"}</button></form>{error&&<div className="notice errornotice">{error}</div>}{result&&<div className="card trackresult"><div><span>Order</span><b>{result.order_number}</b></div><div><span>Status</span><b className="status">{result.status}</b></div><div><span>Total</span><b>{formatINR(result.total_paise)}</b></div><div><span>Placed</span><b>{new Date(result.created_at).toLocaleString("en-IN")}</b></div></div>}</div></section>
+}
