@@ -1,7 +1,6 @@
 import "./globals.css";
 import Image from "next/image";
 import Link from "next/link";
-import Script from "next/script";
 import { CartProvider, CartButton } from "@/components/CartProvider";
 import { AuthGate } from "@/components/AuthGate";
 
@@ -15,12 +14,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" suppressHydrationWarning>
       <body>
-        <Script
-  async
-  src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1045049664709570"
-  crossOrigin="anonymous"
-  strategy="afterInteractive"
-/>
         <CartProvider>
           <div className="topbar">Natural • Trusted • Ayurvedic &nbsp;|&nbsp; Hyderabad</div>
           <nav className="nav">
